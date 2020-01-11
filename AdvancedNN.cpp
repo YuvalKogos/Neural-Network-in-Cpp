@@ -20,10 +20,6 @@ double RandomDouble(double min, double max)
 	//return M + (rand() / (RAND_MAX / (N - M)));
 }
 
-double randMToN(double M, double N)
-{
-	return M + (rand() / (RAND_MAX / (N - M)));
-}
 
 double Sigmoid(double val)
 {
