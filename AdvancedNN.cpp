@@ -1,5 +1,5 @@
-// AdvancedNN.cpp : Defines the entry point for the console application.
-//
+//////////CREATOR : Yuval Kogos///////////
+//////////A Neural Network class in c++ for better spped and precision - using only Vector library/////////
 
 #include "stdafx.h"
 #include <vector>
@@ -30,8 +30,11 @@ double Sigmoid(double val)
 	return 1 / (1 + exp(-val));
 }
 
+
+
 class Matrix
 {
+	//Matrix class for the Linear algebra math and matrix multiplcations
 public:
 	int rows, cols;
 	vector<vector<double>> values;
@@ -202,6 +205,8 @@ private:
 public:
 	NeuralNetwork(int inputn, int hiddenn, int outputn, double lr)
 	{
+		//***Currently supports only 1 hidden-layer
+		
 		input_nodes = inputn;
 		hidden_nodes = hiddenn;
 		output_nodes = outputn;
@@ -227,12 +232,12 @@ public:
 
 	Matrix Predict(Matrix inputs)
 	{
+		 
 		if (inputs.cols > 1 || inputs.rows != IHWeigths.rows)
 			throw invalid_argument("Input vector dimension doesn't match the network weight matrix dimensions.");
 
-		//Input hidden productd
-		//inputs.Print();
-		//IHWeigths.Print();
+		//Making a prediction for an input matrix using Feed-Forward algorithm
+		
 		Matrix IHOutput = Matrix::Multiply(IHWeigths, inputs);
 		IHOutput = Matrix::Add(IHOutput, HBias);
 		IHOutput.ActivationFunction();
@@ -247,6 +252,8 @@ public:
 
 	void Train(Matrix inputs, Matrix target)
 	{
+		//Training the net using Back-Propogation technique and Gradient descent algorithm
+		
 		if (inputs.cols > 1 || inputs.rows != IHWeigths.rows)
 			throw invalid_argument("Input vector dimension doesn't match the network weight matrix dimensions.");
 
@@ -295,89 +302,4 @@ public:
 };
 
 
-
-int main()
-{
-	Matrix labels[4];
-	Matrix dataset[4];
-
-	Matrix data1(2, 1);
-	data1.SetValue(0, 0, 0.0);
-	data1.SetValue(1, 0, 0.0);
-	dataset[0] = data1;
-
-	Matrix data2(2, 1);
-	data2.SetValue(0, 0, 0.0);
-	data2.SetValue(1, 0, 1.0);
-	dataset[1] = data2;
-
-	Matrix data3(2, 1);
-	data3.SetValue(0, 0, 1.0);
-	data3.SetValue(1, 0, 0.0);
-	dataset[2] = data3;
-
-	Matrix data4(2, 1);
-	data4.SetValue(0, 0, 1.0);
-	data4.SetValue(1, 0, 1.0);
-	dataset[3] = data4;
-	
-
-	Matrix label1(2, 1);
-	label1.SetValue(0, 0, 1.0);
-	label1.SetValue(1, 0, 0.0);
-	labels[0] = label1;
-
-	Matrix label2(2, 1);
-	label2.SetValue(0, 0, 0.0);
-	label2.SetValue(1, 0, 1.0);
-	labels[1] = label2;
-
-	Matrix label3(2, 1);
-	label3.SetValue(0, 0, 0.0);
-	label3.SetValue(1, 0, 1.0);
-	labels[2] = label3;
-
-	Matrix label4(2, 1);
-	label4.SetValue(0, 0, 1.0);
-	label4.SetValue(1, 0, 0.0);
-	labels[3] = label4;
-
-	NeuralNetwork nn(2,2,2,0.1);
-	Matrix inputs(2,1);
-	nn.Predict(dataset[0]).Print();
-
-	cout << "Predictions before training: " << endl;
-	for (int i = 0; i < 4; i++)
-	{
-		nn.Predict(dataset[i]).Print();
-	}
-
-	for (int i = 0; i < 1000; i++)
-	{
-		if (i == 15)
-		{
-			cout << "Predictions after training: " << endl;
-			for (int i = 0; i < 4; i++)
-			{
-				nn.Predict(dataset[i]).Print();
-			}
-
-		}
-		for (int j = 0; j < 4; j++)
-		{
-			nn.Train(dataset[j], labels[j]);
-		}
-	}
-
-	cout << "Predictions after training: " << endl;
-	for (int i = 0; i < 4; i++)
-	{
-		nn.Predict(dataset[i]).Print();
-	}
-	
-
-	cout << endl;
-	system("Pause");
-    return 0;
-}
 
