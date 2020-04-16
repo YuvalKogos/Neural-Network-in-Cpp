@@ -8,5 +8,4 @@ Notes:
 with a vector(vector(double)) object (Same as list of lists in Python language).
 - A CSV parser to a correct dataset, for my NN input will be uploaded soon.
 
-*All rights reserved to Yuval Kogos.
 
